@@ -368,6 +368,7 @@ h6 {
 
 body {
   font-family: 'Lato', sans-serif;
+  background: url(../img/DSC_0221.jpg) center center/cover no-repeat;
 }
 
 .line {
@@ -940,6 +941,8 @@ body {
     width: 90%;
   }
 }
+
+.webp body{ background: url(../img/DSC_0221.webp) center center/cover no-repeat; }
 
 .webp .line{ background: url(../img/line.webp) no-repeat; }
 
