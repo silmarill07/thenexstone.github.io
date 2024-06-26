@@ -1,45 +1,40 @@
-/* style.css */
-
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.login-container, .edit-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+h1 {
+  text-align: center;
+  color: #333;
 }
 
-.login-container h2, .edit-container h2 {
-    margin-bottom: 20px;
+iframe {
+  width: 100%;
+  height: calc(100vh - 120px); /* Высота минус высота шапки и кнопки сохранения */
+  border: none;
+  margin-top: 20px;
 }
 
-.login-container form, .edit-container form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.editable {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  min-height: 100px;
 }
 
-.login-container label, .edit-container label, .login-container input, .edit-container input {
-    margin-bottom: 10px;
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.login-container button, .edit-container button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-}
-
-.login-container button:hover, .edit-container button:hover {
-    background-color: #45a049;
+button:hover {
+  background-color: #0056b3;
 }
