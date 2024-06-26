@@ -1,6 +1,6 @@
 // Функция для шифрования пароля
 function encryptPassword(password) {
-  // Простой пример шифрования для целей демонстрации
+  // Простой пример шифрования для демонстрации
   return btoa(password); // Base64 encoding
 }
 
@@ -16,6 +16,7 @@ function showLoginForm() {
     <label for="password">Пароль:</label><br>
     <input type="password" id="password" name="password" required><br><br>
     <button type="submit">Войти</button>
+    <button type="button" id="createAccountBtn">Создать аккаунт</button>
   `;
   form.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -35,6 +36,11 @@ function showLoginForm() {
     }
   });
   document.body.appendChild(form);
+
+  // Обработчик для кнопки "Создать аккаунт"
+  document.getElementById('createAccountBtn').addEventListener('click', function() {
+    showCreateAccountForm();
+  });
 }
 
 // Функция для отображения формы создания аккаунта
@@ -48,14 +54,21 @@ function showCreateAccountForm() {
     <input type="text" id="newUsername" name="newUsername" required><br><br>
     <label for="newPassword">Пароль:</label><br>
     <input type="password" id="newPassword" name="newPassword" required><br><br>
+    <label for="resetWord">Проверочное слово:</label><br>
+    <input type="text" id="resetWord" name="resetWord" required><br><br>
     <button type="submit">Создать аккаунт</button>
   `;
   form.addEventListener('submit', function(event) {
     event.preventDefault();
     const newUsername = document.getElementById('newUsername').value;
     const newPassword = document.getElementById('newPassword').value;
-    if (newUsername && newPassword) {
+    const resetWord = document.getElementById('resetWord').value;
+    
+    if (localStorage.getItem(newUsername)) {
+      alert('Такой пользователь уже существует. Попробуйте войти или выберите другое имя.');
+    } else {
       localStorage.setItem(newUsername, encryptPassword(newPassword));
+      localStorage.setItem(`${newUsername}_resetWord`, resetWord);
       alert('Аккаунт создан. Теперь вы можете войти.');
       showLoginForm();
     }
