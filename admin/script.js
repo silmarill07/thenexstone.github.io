@@ -16,7 +16,6 @@ function showLoginForm() {
     <label for="password">Пароль:</label><br>
     <input type="password" id="password" name="password" required><br><br>
     <button type="submit">Войти</button>
-    <button type="button" id="createAccountBtn">Создать аккаунт</button>
   `;
   form.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -36,11 +35,6 @@ function showLoginForm() {
     }
   });
   document.body.appendChild(form);
-
-  // Обработчик для кнопки "Создать аккаунт"
-  document.getElementById('createAccountBtn').addEventListener('click', function() {
-    showCreateAccountForm();
-  });
 }
 
 // Функция для отображения формы создания аккаунта
@@ -54,23 +48,27 @@ function showCreateAccountForm() {
     <input type="text" id="newUsername" name="newUsername" required><br><br>
     <label for="newPassword">Пароль:</label><br>
     <input type="password" id="newPassword" name="newPassword" required><br><br>
-    <label for="resetWord">Проверочное слово:</label><br>
-    <input type="text" id="resetWord" name="resetWord" required><br><br>
+    <label for="securityQuestion">Проверочное слово:</label><br>
+    <input type="text" id="securityQuestion" name="securityQuestion" required><br><br>
     <button type="submit">Создать аккаунт</button>
   `;
   form.addEventListener('submit', function(event) {
     event.preventDefault();
     const newUsername = document.getElementById('newUsername').value;
     const newPassword = document.getElementById('newPassword').value;
-    const resetWord = document.getElementById('resetWord').value;
+    const securityQuestion = document.getElementById('securityQuestion').value;
     
-    if (localStorage.getItem(newUsername)) {
-      alert('Такой пользователь уже существует. Попробуйте войти или выберите другое имя.');
-    } else {
-      localStorage.setItem(newUsername, encryptPassword(newPassword));
-      localStorage.setItem(`${newUsername}_resetWord`, resetWord);
-      alert('Аккаунт создан. Теперь вы можете войти.');
-      showLoginForm();
+    if (newUsername && newPassword && securityQuestion) {
+      const existingPassword = localStorage.getItem(newUsername);
+      if (existingPassword) {
+        alert('Пользователь уже существует. Войдите или выберите другое имя пользователя.');
+        showLoginForm();
+      } else {
+        localStorage.setItem(newUsername, encryptPassword(newPassword));
+        localStorage.setItem(`${newUsername}-security`, securityQuestion.toLowerCase());
+        alert('Аккаунт создан. Теперь вы можете войти.');
+        showLoginForm();
+      }
     }
   });
   document.body.appendChild(form);
