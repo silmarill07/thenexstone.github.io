@@ -1,22 +1,53 @@
 // Проверяем, есть ли сохранённый пароль в localStorage
 const storedPassword = localStorage.getItem('adminPassword');
 
-// Если пароль не установлен, предлагаем создать новый аккаунт
+// Если пароль не установлен, отображаем форму для создания аккаунта
 if (!storedPassword) {
-  const newPassword = prompt('Для начала работы введите новый пароль:');
-  if (newPassword) {
-    localStorage.setItem('adminPassword', newPassword);
-    alert('Аккаунт создан. Перезагрузите страницу для входа.');
-  }
+  showCreateAccountForm();
 } else {
-  // Если пароль установлен, предлагаем войти
-  const enteredPassword = prompt('Введите пароль:');
-  if (enteredPassword === storedPassword) {
-    // Пароль верный, активируем режим редактирования
-    activateEditMode();
-  } else {
-    alert('Неверный пароль. Попробуйте еще раз.');
-  }
+  // Если пароль установлен, отображаем форму для входа
+  showLoginForm();
+}
+
+// Функция для отображения формы создания аккаунта
+function showCreateAccountForm() {
+  const form = document.createElement('form');
+  form.innerHTML = `
+    <h1>Создание аккаунта</h1>
+    <label for="newPassword">Введите новый пароль:</label><br>
+    <input type="password" id="newPassword" name="newPassword" required><br><br>
+    <button type="submit">Создать аккаунт</button>
+  `;
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const newPassword = document.getElementById('newPassword').value;
+    if (newPassword) {
+      localStorage.setItem('adminPassword', newPassword);
+      alert('Аккаунт создан. Перезагрузите страницу для входа.');
+    }
+  });
+  document.body.appendChild(form);
+}
+
+// Функция для отображения формы входа
+function showLoginForm() {
+  const form = document.createElement('form');
+  form.innerHTML = `
+    <h1>Вход в систему</h1>
+    <label for="password">Введите пароль:</label><br>
+    <input type="password" id="password" name="password" required><br><br>
+    <button type="submit">Войти</button>
+  `;
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const enteredPassword = document.getElementById('password').value;
+    if (enteredPassword === storedPassword) {
+      activateEditMode();
+    } else {
+      alert('Неверный пароль. Попробуйте еще раз.');
+    }
+  });
+  document.body.appendChild(form);
 }
 
 // Функция для активации режима редактирования
@@ -27,7 +58,7 @@ function activateEditMode() {
   document.body.appendChild(editableContainer);
   
   const iframe = document.createElement('iframe');
-  iframe.src = '/index.html'; // Поменяйте на нужный URL страницы сайта
+  iframe.src = 'index.html'; // Поменяйте на нужный URL страницы сайта
   iframe.style.display = 'none'; // Скрываем iframe
   document.body.appendChild(iframe);
   
