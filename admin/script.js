@@ -4,15 +4,35 @@ function encryptPassword(password) {
   return btoa(password); // Base64 encoding
 }
 
-// Проверяем, есть ли сохранённый пароль в localStorage
-const storedPassword = localStorage.getItem('adminPassword');
-
-// Если пароль не установлен, отображаем форму для создания аккаунта
-if (!storedPassword) {
-  showCreateAccountForm();
-} else {
-  // Если пароль установлен, отображаем форму для входа
-  showLoginForm();
+// Функция для отображения формы входа
+function showLoginForm() {
+  const form = document.createElement('form');
+  form.innerHTML = `
+    <h1>Вход в систему</h1>
+    <label for="username">Логин:</label><br>
+    <input type="text" id="username" name="username" required><br><br>
+    <label for="password">Пароль:</label><br>
+    <input type="password" id="password" name="password" required><br><br>
+    <button type="submit">Войти</button>
+  `;
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const enteredUsername = document.getElementById('username').value;
+    const enteredPassword = document.getElementById('password').value;
+    const storedPassword = localStorage.getItem(enteredUsername);
+    
+    if (!storedPassword) {
+      alert('Пользователь не найден. Создайте аккаунт.');
+      showCreateAccountForm();
+    } else {
+      if (encryptPassword(enteredPassword) === storedPassword) {
+        activateEditMode();
+      } else {
+        alert('Неверный пароль. Попробуйте еще раз.');
+      }
+    }
+  });
+  document.body.appendChild(form);
 }
 
 // Функция для отображения формы создания аккаунта
@@ -20,41 +40,27 @@ function showCreateAccountForm() {
   const form = document.createElement('form');
   form.innerHTML = `
     <h1>Создание аккаунта</h1>
-    <label for="newPassword">Введите новый пароль:</label><br>
+    <label for="newUsername">Логин:</label><br>
+    <input type="text" id="newUsername" name="newUsername" required><br><br>
+    <label for="newPassword">Пароль:</label><br>
     <input type="password" id="newPassword" name="newPassword" required><br><br>
     <button type="submit">Создать аккаунт</button>
   `;
   form.addEventListener('submit', function(event) {
     event.preventDefault();
+    const newUsername = document.getElementById('newUsername').value;
     const newPassword = document.getElementById('newPassword').value;
-    if (newPassword) {
-      localStorage.setItem('adminPassword', encryptPassword(newPassword));
-      alert('Аккаунт создан. Перезагрузите страницу для входа.');
+    if (newUsername && newPassword) {
+      localStorage.setItem(newUsername, encryptPassword(newPassword));
+      alert('Аккаунт создан. Теперь вы можете войти.');
+      showLoginForm();
     }
   });
   document.body.appendChild(form);
 }
 
-// Функция для отображения формы входа
-function showLoginForm() {
-  const form = document.createElement('form');
-  form.innerHTML = `
-    <h1>Вход в систему</h1>
-    <label for="password">Введите пароль:</label><br>
-    <input type="password" id="password" name="password" required><br><br>
-    <button type="submit">Войти</button>
-  `;
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const enteredPassword = document.getElementById('password').value;
-    if (encryptPassword(enteredPassword) === storedPassword) {
-      activateEditMode();
-    } else {
-      alert('Неверный пароль. Попробуйте еще раз.');
-    }
-  });
-  document.body.appendChild(form);
-}
+// Показываем форму входа при загрузке страницы
+showLoginForm();
 
 // Функция для активации режима редактирования
 function activateEditMode() {
