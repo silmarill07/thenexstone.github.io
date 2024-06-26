@@ -1,33 +1,37 @@
-<!-- admin.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Административная панель</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login to Admin Panel</h2>
-        <form id="loginForm">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
-    </div>
-    <div class="edit-container" style="display: none;">
-        <h2>Edit Page Content</h2>
-        <form id="contentForm">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
-            <label for="content">Content:</label>
-            <textarea id="content" name="content" rows="6" required></textarea>
-            <button type="submit">Save Changes</button>
-        </form>
-    </div>
-    <script src="script.js"></script>
+  <h1>Административная панель</h1>
+  
+  <!-- Форма для входа -->
+  <form id="loginForm">
+    <label for="username">Имя пользователя:</label>
+    <input type="text" id="username" name="username" required>
+    
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" name="password" required>
+    
+    <button type="submit">Войти</button>
+  </form>
+  
+  <!-- Форма для редактирования контента -->
+  <form id="contentForm" style="display: none;">
+    <label for="title">Заголовок:</label>
+    <input type="text" id="title" name="title" required>
+    
+    <label for="content">Содержимое:</label>
+    <textarea id="content" name="content" rows="6" required></textarea>
+    
+    <button type="submit">Сохранить</button>
+  </form>
+  
+  <!-- Скрипт для обработки входа и редактирования -->
+  <script src="script.js"></script>
 </body>
 </html>
