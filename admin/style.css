@@ -11,6 +11,15 @@ h1 {
   color: #333;
 }
 
+.centered-form {
+  width: 300px;
+  margin: 50px auto; /* Центрируем формы по горизонтали */
+  padding: 20px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 .editable-container {
   width: 100%;
   max-width: 800px; /* Максимальная ширина редактируемого контейнера */
