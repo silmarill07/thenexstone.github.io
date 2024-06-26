@@ -63,3 +63,45 @@ function fetchHtmlPages() {
     })
     .catch(error => console.error('Ошибка получения .html файлов:', error));
 }
+
+// script.js
+
+const adminPasswordKey = 'adminPassword';
+
+// Функция для проверки, установлен ли пароль
+function checkPassword() {
+    let storedPassword = localStorage.getItem(adminPasswordKey);
+    if (!storedPassword) {
+        // Если пароль не установлен, предложить создать
+        let newPassword = prompt('Enter a new password for admin access:');
+        if (newPassword) {
+            localStorage.setItem(adminPasswordKey, newPassword);
+            alert('Password set successfully! Please login again.');
+        } else {
+            alert('Password cannot be empty. Please set a valid password.');
+        }
+        return false;
+    }
+    return true;
+}
+
+// Обработчик события отправки формы
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Предотвратить отправку формы
+
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+
+    // Проверить пароль
+    if (checkPassword()) {
+        // Проверка логина и пароля (здесь вы можете использовать более сложную логику проверки)
+        if (password === localStorage.getItem(adminPasswordKey)) {
+            // Войти в админ панель
+            alert('Login successful! You can now edit the website content.');
+            // Добавить код для перехода к редактированию сайта
+            activateEditMode(); // Ваша функция активации режима редактирования
+        } else {
+            alert('Invalid username or password. Please try again.');
+        }
+    }
+});
