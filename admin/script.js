@@ -21,46 +21,45 @@ if (!storedPassword) {
 
 // Функция для активации режима редактирования
 function activateEditMode() {
-  // Показываем форму для редактирования
-  document.getElementById('contentForm').style.display = 'block';
+  // Загружаем страницу сайта в iframe
+  const iframe = document.createElement('iframe');
+  iframe.src = '/index.html'; // Поменяйте на нужный URL страницы сайта
+  document.body.appendChild(iframe);
   
-  // Загружаем текущие данные страницы в форму
-  loadPageData();
+  // Стилизуем iframe для редактирования
+  iframe.style.width = '100%';
+  iframe.style.height = '100vh';
+  iframe.style.border = 'none';
+  
+  // Функция для перехвата содержимого iframe и его редактирования
+  iframe.onload = function() {
+    const contentDocument = iframe.contentDocument || iframe.contentWindow.document;
+    
+    // Пример редактирования заголовка
+    const mainTitle = contentDocument.getElementById('main-title');
+    if (mainTitle) {
+      mainTitle.contentEditable = true; // Делаем заголовок редактируемым
+      mainTitle.style.border = '1px solid #ccc'; // Пример стилизации редактируемого элемента
+    }
+    
+    // Пример редактирования содержимого
+    const mainContent = contentDocument.getElementById('main-content');
+    if (mainContent) {
+      mainContent.contentEditable = true; // Делаем содержимое редактируемым
+      mainContent.style.border = '1px solid #ccc'; // Пример стилизации редактируемого элемента
+    }
+    
+    // Добавляем кнопку сохранения изменений
+    const saveButton = document.createElement('button');
+    saveButton.textContent = 'Сохранить изменения';
+    saveButton.addEventListener('click', function() {
+      // Сохраняем изменения (здесь можно отправить изменения на сервер или в localStorage)
+      console.log('Сохраняем изменения:', {
+        title: mainTitle.innerText,
+        content: mainContent.innerText
+      });
+      alert('Изменения сохранены!');
+    });
+    document.body.appendChild(saveButton);
+  };
 }
-
-// Функция для загрузки данных страницы в форму
-function loadPageData() {
-  let pageTitle = document.getElementById('title');
-  let pageContent = document.getElementById('content');
-  
-  // Определяем текущий путь страницы и загружаем соответствующие данные
-  const path = window.location.pathname;
-  
-  if (path === '/' || path === '/index.html') {
-    pageTitle.textContent = 'Заголовок главной страницы';
-    pageContent.textContent = 'Содержимое главной страницы';
-  } else if (path === '/ua.html') {
-    pageTitle.textContent = 'Заголовок украинской страницы';
-    pageContent.textContent = 'Содержимое украинской страницы';
-  } else {
-    // Для других страниц, если они не определены выше
-    pageTitle.textContent = 'Другая страница';
-    pageContent.textContent = 'Другое содержимое';
-  }
-}
-
-// Обработчик события отправки формы
-document.getElementById('contentForm').addEventListener('submit', function(event) {
-  event.preventDefault(); // Предотвращаем отправку формы
-  
-  // Получаем данные из формы
-  let formData = new FormData(this);
-  
-  // Выводим данные в консоль (замените на логику сохранения на сервере)
-  for (let pair of formData.entries()) {
-    console.log(pair[0] + ': ' + pair[1]);
-  }
-  
-  // Выводим сообщение об успешном сохранении
-  alert('Данные сохранены!');
-});
