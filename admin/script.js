@@ -1,3 +1,9 @@
+// Функция для шифрования пароля
+function encryptPassword(password) {
+  // Простой пример шифрования для целей демонстрации
+  return btoa(password); // Base64 encoding
+}
+
 // Проверяем, есть ли сохранённый пароль в localStorage
 const storedPassword = localStorage.getItem('adminPassword');
 
@@ -22,7 +28,7 @@ function showCreateAccountForm() {
     event.preventDefault();
     const newPassword = document.getElementById('newPassword').value;
     if (newPassword) {
-      localStorage.setItem('adminPassword', newPassword);
+      localStorage.setItem('adminPassword', encryptPassword(newPassword));
       alert('Аккаунт создан. Перезагрузите страницу для входа.');
     }
   });
@@ -41,7 +47,7 @@ function showLoginForm() {
   form.addEventListener('submit', function(event) {
     event.preventDefault();
     const enteredPassword = document.getElementById('password').value;
-    if (enteredPassword === storedPassword) {
+    if (encryptPassword(enteredPassword) === storedPassword) {
       activateEditMode();
     } else {
       alert('Неверный пароль. Попробуйте еще раз.');
@@ -52,49 +58,25 @@ function showLoginForm() {
 
 // Функция для активации режима редактирования
 function activateEditMode() {
-  // Загружаем страницу сайта в редактируемый контейнер
+  // Очищаем страницу от формы входа
+  document.body.innerHTML = '';
+
+  // Создаем редактируемый контейнер
   const editableContainer = document.createElement('div');
   editableContainer.classList.add('editable-container');
   document.body.appendChild(editableContainer);
-  
+
+  // Загружаем index.html в iframe для редактирования
   const iframe = document.createElement('iframe');
   iframe.src = 'index.html'; // Поменяйте на нужный URL страницы сайта
-  iframe.style.display = 'none'; // Скрываем iframe
-  document.body.appendChild(iframe);
-  
-  // Загружаем содержимое страницы в редактируемый контейнер
-  iframe.onload = function() {
-    const contentDocument = iframe.contentDocument || iframe.contentWindow.document;
-    const pageTitle = contentDocument.getElementById('main-title');
-    const pageContent = contentDocument.getElementById('main-content');
-    
-    // Помещаем заголовок и содержимое страницы в редактируемый контейнер
-    if (pageTitle) {
-      const editableTitle = createEditableElement(pageTitle);
-      editableContainer.appendChild(editableTitle);
-    }
-    if (pageContent) {
-      const editableContent = createEditableElement(pageContent);
-      editableContainer.appendChild(editableContent);
-    }
-    
-    // Отображаем редактируемый контейнер
-    editableContainer.style.display = 'block';
-  };
-}
+  iframe.style.width = '100%';
+  iframe.style.height = '100vh';
+  iframe.style.border = 'none';
+  editableContainer.appendChild(iframe);
 
-// Функция для создания редактируемого элемента
-function createEditableElement(originalElement) {
-  const editableElement = document.createElement('div');
-  editableElement.contentEditable = true;
-  editableElement.innerHTML = originalElement.innerHTML;
-  editableElement.classList.add('editable');
-  
-  // Добавляем стандартную панель редактирования текста
+  // Добавляем панель инструментов
   const toolbar = createToolbar();
-  editableElement.insertBefore(toolbar, editableElement.firstChild);
-  
-  return editableElement;
+  document.body.appendChild(toolbar);
 }
 
 // Функция для создания панели редактирования текста
