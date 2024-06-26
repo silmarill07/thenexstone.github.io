@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Простая административная панель</title>
+<link rel="stylesheet" href="style.css"> <!-- Подключение стилей -->
+</head>
+<body>
+    <div class="admin-panel">
+        <h1>Простая административная панель</h1>
+        <div class="editable" contenteditable="true">
+            <p>Это редактируемый контент. Нажмите, чтобы отредактировать!</p>
+        </div>
+        <div>
+            <label for="imageUpload">Загрузить изображение:</label>
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
+        <button class="button" id="saveChangesBtn">Сохранить изменения</button>
+
+        <script src="script.js"></script> <!-- Подключение скриптов -->
+    </div>
+</body>
+</html>

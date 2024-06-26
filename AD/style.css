@@ -1,0 +1,50 @@
+/* Стили для body */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+/* Стили для кнопок */
+.button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Стили для состояния наведения на кнопки */
+.button:hover {
+    background-color: #45a049;
+}
+
+/* Стили для административной панели */
+.admin-panel {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    display: none; /* По умолчанию скрываем панель */
+}
+
+.admin-panel h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.editable {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.editable img {
+    max-width: 100%;
+}
