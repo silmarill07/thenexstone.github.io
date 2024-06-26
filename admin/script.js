@@ -24,12 +24,8 @@ function activateEditMode() {
   // Загружаем страницу сайта в iframe
   const iframe = document.createElement('iframe');
   iframe.src = '/index.html'; // Поменяйте на нужный URL страницы сайта
+  iframe.classList.add('editable');
   document.body.appendChild(iframe);
-  
-  // Стилизуем iframe для редактирования
-  iframe.style.width = '100%';
-  iframe.style.height = '100vh';
-  iframe.style.border = 'none';
   
   // Функция для перехвата содержимого iframe и его редактирования
   iframe.onload = function() {
@@ -39,14 +35,12 @@ function activateEditMode() {
     const mainTitle = contentDocument.getElementById('main-title');
     if (mainTitle) {
       mainTitle.contentEditable = true; // Делаем заголовок редактируемым
-      mainTitle.style.border = '1px solid #ccc'; // Пример стилизации редактируемого элемента
     }
     
     // Пример редактирования содержимого
     const mainContent = contentDocument.getElementById('main-content');
     if (mainContent) {
       mainContent.contentEditable = true; // Делаем содержимое редактируемым
-      mainContent.style.border = '1px solid #ccc'; // Пример стилизации редактируемого элемента
     }
     
     // Добавляем кнопку сохранения изменений
