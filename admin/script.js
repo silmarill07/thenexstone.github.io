@@ -21,39 +21,76 @@ if (!storedPassword) {
 
 // Функция для активации режима редактирования
 function activateEditMode() {
-  // Загружаем страницу сайта в iframe
+  // Загружаем страницу сайта в редактируемый контейнер
+  const editableContainer = document.createElement('div');
+  editableContainer.classList.add('editable-container');
+  document.body.appendChild(editableContainer);
+  
   const iframe = document.createElement('iframe');
   iframe.src = '/index.html'; // Поменяйте на нужный URL страницы сайта
-  iframe.classList.add('editable');
+  iframe.style.display = 'none'; // Скрываем iframe
   document.body.appendChild(iframe);
   
-  // Функция для перехвата содержимого iframe и его редактирования
+  // Загружаем содержимое страницы в редактируемый контейнер
   iframe.onload = function() {
     const contentDocument = iframe.contentDocument || iframe.contentWindow.document;
+    const pageTitle = contentDocument.getElementById('main-title');
+    const pageContent = contentDocument.getElementById('main-content');
     
-    // Пример редактирования заголовка
-    const mainTitle = contentDocument.getElementById('main-title');
-    if (mainTitle) {
-      mainTitle.contentEditable = true; // Делаем заголовок редактируемым
+    // Помещаем заголовок и содержимое страницы в редактируемый контейнер
+    if (pageTitle) {
+      const editableTitle = createEditableElement(pageTitle);
+      editableContainer.appendChild(editableTitle);
+    }
+    if (pageContent) {
+      const editableContent = createEditableElement(pageContent);
+      editableContainer.appendChild(editableContent);
     }
     
-    // Пример редактирования содержимого
-    const mainContent = contentDocument.getElementById('main-content');
-    if (mainContent) {
-      mainContent.contentEditable = true; // Делаем содержимое редактируемым
-    }
-    
-    // Добавляем кнопку сохранения изменений
-    const saveButton = document.createElement('button');
-    saveButton.textContent = 'Сохранить изменения';
-    saveButton.addEventListener('click', function() {
-      // Сохраняем изменения (здесь можно отправить изменения на сервер или в localStorage)
-      console.log('Сохраняем изменения:', {
-        title: mainTitle.innerText,
-        content: mainContent.innerText
-      });
-      alert('Изменения сохранены!');
-    });
-    document.body.appendChild(saveButton);
+    // Отображаем редактируемый контейнер
+    editableContainer.style.display = 'block';
   };
+}
+
+// Функция для создания редактируемого элемента
+function createEditableElement(originalElement) {
+  const editableElement = document.createElement('div');
+  editableElement.contentEditable = true;
+  editableElement.innerHTML = originalElement.innerHTML;
+  editableElement.classList.add('editable');
+  
+  // Добавляем стандартную панель редактирования текста
+  const toolbar = createToolbar();
+  editableElement.insertBefore(toolbar, editableElement.firstChild);
+  
+  return editableElement;
+}
+
+// Функция для создания панели редактирования текста
+function createToolbar() {
+  const toolbar = document.createElement('div');
+  toolbar.classList.add('toolbar');
+  
+  // Добавляем кнопки для стилизации текста
+  const buttons = [
+    { icon: 'format_bold', command: 'bold' },
+    { icon: 'format_italic', command: 'italic' },
+    { icon: 'format_align_left', command: 'justifyLeft' },
+    { icon: 'format_align_center', command: 'justifyCenter' },
+    { icon: 'format_align_right', command: 'justifyRight' },
+    { icon: 'format_size', command: 'fontSize', value: '4' },
+    { icon: 'format_color_text', command: 'foreColor', value: 'red' },
+    { icon: 'format_color_fill', command: 'backColor', value: 'yellow' },
+  ];
+  
+  buttons.forEach(button => {
+    const buttonElement = document.createElement('button');
+    buttonElement.innerHTML = `<i class="material-icons">${button.icon}</i>`;
+    buttonElement.addEventListener('click', () => {
+      document.execCommand(button.command, false, button.value || null);
+    });
+    toolbar.appendChild(buttonElement);
+  });
+  
+  return toolbar;
 }
