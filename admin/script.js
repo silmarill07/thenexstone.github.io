@@ -23,22 +23,44 @@ function checkPassword() {
 function activateEditMode() {
     document.querySelector('.login-container').style.display = 'none';
     document.querySelector('.edit-container').style.display = 'block';
-    loadPageData();
+    loadPageData(); // Загрузка данных страницы после активации режима
 }
 
 // Функция для загрузки данных страницы в форму
 function loadPageData() {
-    let pageTitle = document.getElementById('title');
-    let pageContent = document.getElementById('content');
+    let pageTitleInput = document.getElementById('title');
+    let pageContentInput = document.getElementById('content');
 
     // Определение заголовка и содержимого в зависимости от текущей страницы
-    if (location.pathname.includes('index.html')) {
-        pageTitle.value = 'Заголовок главной страницы';
-        pageContent.value = 'Содержимое главной страницы';
-    } else if (location.pathname.includes('ua.html')) {
-        pageTitle.value = 'Заголовок української сторінки';
-        pageContent.value = 'Зміст української сторінки';
+    let currentPage = getCurrentPage();
+    fetch(currentPage)
+        .then(response => response.text())
+        .then(data => {
+            // Парсинг HTML содержимого
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(data, 'text/html');
+
+            // Получаем заголовок и содержимое
+            let title = doc.querySelector('title').textContent;
+            let content = doc.querySelector('body').innerHTML;
+
+            // Устанавливаем значения в форму редактирования
+            pageTitleInput.value = title;
+            pageContentInput.value = content;
+        })
+        .catch(error => {
+            console.error('Ошибка при загрузке данных страницы:', error);
+            alert('Произошла ошибка при загрузке данных страницы.');
+        });
+}
+
+// Функция для определения текущей страницы
+function getCurrentPage() {
+    let path = window.location.pathname;
+    if (path.endsWith('/')) {
+        path += 'index.html'; // По умолчанию, если это корневой путь
     }
+    return path;
 }
 
 // Обработчик события отправки формы входа
