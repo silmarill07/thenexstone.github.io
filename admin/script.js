@@ -6,7 +6,9 @@ function encryptPassword(password) {
 
 // Функция для отображения формы входа
 function showLoginForm() {
+  clearForms(); // Очищаем текущие формы перед добавлением новой
   const form = document.createElement('form');
+  form.classList.add('centered-form');
   form.innerHTML = `
     <h1>Вход в систему</h1>
     <label for="username">Логин:</label><br>
@@ -37,7 +39,9 @@ function showLoginForm() {
 
 // Функция для отображения формы создания аккаунта
 function showCreateAccountForm() {
+  clearForms(); // Очищаем текущие формы перед добавлением новой
   const form = document.createElement('form');
+  form.classList.add('centered-form');
   form.innerHTML = `
     <h1>Создание аккаунта</h1>
     <label for="newUsername">Логин:</label><br>
@@ -59,13 +63,18 @@ function showCreateAccountForm() {
   document.body.appendChild(form);
 }
 
+// Функция для удаления текущих форм
+function clearForms() {
+  const forms = document.querySelectorAll('.centered-form');
+  forms.forEach(form => form.remove());
+}
+
 // Показываем форму входа при загрузке страницы
 showLoginForm();
 
 // Функция для активации режима редактирования
 function activateEditMode() {
-  // Очищаем страницу от формы входа
-  document.body.innerHTML = '';
+  clearForms(); // Очищаем формы после входа в систему
 
   // Создаем редактируемый контейнер
   const editableContainer = document.createElement('div');
@@ -76,7 +85,7 @@ function activateEditMode() {
   const iframe = document.createElement('iframe');
   iframe.src = 'index.html'; // Поменяйте на нужный URL страницы сайта
   iframe.style.width = '100%';
-  iframe.style.height = '100vh';
+  iframe.style.height = 'calc(100vh - 50px)'; // Высота минус высота панели инструментов
   iframe.style.border = 'none';
   editableContainer.appendChild(iframe);
 
